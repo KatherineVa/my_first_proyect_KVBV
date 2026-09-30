@@ -5,12 +5,13 @@ import { AppModule } from './app.module.js';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const config = new DocumentBuilder()
-    .setTitle('My API')
-    .setDescription('API description')
-    .setVersion('1.0')
-    .addTag('api')
-    .build();
+const config = new DocumentBuilder()
+  .setTitle('My API')
+  .setDescription('API description')
+  .setVersion('1.0')
+  .addTag('api')
+  .addBearerAuth()
+  .build();
   const document = SwaggerModule.createDocument(app, config);
 
   SwaggerModule.setup('api', app, document);

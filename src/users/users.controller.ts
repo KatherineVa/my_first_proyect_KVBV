@@ -2,6 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UsersService } from './users.service.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guard/auth.guard.js';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
@@ -11,11 +14,12 @@ export class UsersController {
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
-
+  @ApiBearerAuth()
   @Get()
-  findAll() {
-    return this.usersService.findAll();
-  }
+@UseGuards(JwtAuthGuard)
+findAll() {
+  return this.usersService.findAll();
+}
 
   @Get(':id')
   findOne(@Param('id') id: string) {
